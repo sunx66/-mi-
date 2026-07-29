@@ -1,0 +1,42 @@
+{
+  "name": "暖喵帮扶",
+  "appid": "__UNI__NUANMIAO",
+  "description": "流浪猫定位与状态帮扶",
+  "versionName": "1.0.0",
+  "versionCode": "100",
+  "transformPx": false,
+  "mp-weixin": {
+    "appid": "",
+    "setting": {
+      "urlCheck": false,
+      "es6": true,
+      "enhance": true,
+      "postcss": true,
+      "minified": true
+    },
+    "usingComponents": true,
+    "permission": {
+      "scope.userLocation": {
+        "desc": "用于展示附近的流浪猫咪点位"
+      }
+    },
+    "requiredPrivateInfos": [
+      "getLocation",
+      "chooseLocation"
+    ]
+  },
+  "h5": {
+    "devServer": {
+      "port": 8080,
+      "proxy": {}
+    },
+    "title": "暖喵帮扶",
+    "sdkConfigs": {
+      "maps": {
+        "tencent": {
+          "key": "YOUR_TENCENT_MAP_KEY"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "暖喵帮扶",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/cat-profile/index",
+      "style": {
+        "navigationBarTitleText": "猫咪档案",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/add-cat/index",
+      "style": {
+        "navigationBarTitleText": "新增猫咪",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/feed-checkin/index",
+      "style": {
+        "navigationBarTitleText": "投喂打卡",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/community/index",
+      "style": {
+        "navigationBarTitleText": "互助公告",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/guide/index",
+      "style": {
+        "navigationBarTitleText": "帮扶指南",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/profile/index",
+      "style": {
+        "navigationBarTitleText": "个人中心",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/feed-records/index",
+      "style": {
+        "navigationBarTitleText": "投喂记录",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/my-posts/index",
+      "style": {
+        "navigationBarTitleText": "我的公告",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/cat-archives/index",
+      "style": {
+        "navigationBarTitleText": "我的档案",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/favorite-spots/index",
+      "style": {
+        "navigationBarTitleText": "收藏点位",
+        "navigationStyle": "custom"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "暖喵帮扶",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#FAF8F5",
+    "app-plus": {
+      "titleNView": false
+    }
+  },
+  "tabBar": {
+    "color": "#857660",
+    "selectedColor": "#FF8210",
+    "borderStyle": "white",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "static/icons/tab-home.png",
+        "selectedIconPath": "static/icons/tab-home-active.png"
+      },
+      {
+        "pagePath": "pages/community/index",
+        "text": "公告",
+        "iconPath": "static/icons/tab-community.png",
+        "selectedIconPath": "static/icons/tab-community-active.png"
+      },
+      {
+        "pagePath": "pages/guide/index",
+        "text": "指南",
+        "iconPath": "static/icons/tab-guide.png",
+        "selectedIconPath": "static/icons/tab-guide-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "static/icons/tab-profile.png",
+        "selectedIconPath": "static/icons/tab-profile-active.png"
+      }
+    ]
+  }
+}
