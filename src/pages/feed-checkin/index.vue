@@ -243,6 +243,7 @@ import { ref, computed } from 'vue'
 import { onLoad, onUnload } from '@dcloudio/uni-app'
 import { useCatStore } from '@/store/cat'
 import { CURRENT_USER } from '@/store/user'
+import { TENCENT_MAP_API_BASE } from '@/utils/apiBase'
 import { showSuccess, showError } from '@/utils/toast'
 import { QQ_MAP_GL_KEY } from '@/config/keys'
 import { getFoodColor } from '@/utils/format'
@@ -451,7 +452,7 @@ function onAddressInput(e) {
 // 调用腾讯地图 placeSuggestion API
 function fetchSuggestions(keyword) {
   uni.request({
-    url: '/api/tencent/place/v1/suggestion',
+    url: TENCENT_MAP_API_BASE + '/place/v1/suggestion',
     data: {
       keyword: keyword,
       key: QQ_MAP_GL_KEY,
@@ -510,7 +511,7 @@ function onAddressConfirm() {
 function geocodeAddress(address) {
   uni.showLoading({ title: '地址校验中...', mask: true })
   uni.request({
-    url: '/api/tencent/geocoder/v1/',
+    url: TENCENT_MAP_API_BASE + '/geocoder/v1/',
     data: {
       address: address,
       key: QQ_MAP_GL_KEY
@@ -543,7 +544,7 @@ function geocodeAddress(address) {
 // 只要能搜到有效 POI 即判定地址合法，不强制行政区划层级
 function fallbackSuggestion(address) {
   uni.request({
-    url: '/api/tencent/place/v1/suggestion',
+    url: TENCENT_MAP_API_BASE + '/place/v1/suggestion',
     data: {
       keyword: address,
       key: QQ_MAP_GL_KEY,
@@ -592,7 +593,7 @@ function onPreviewMarkerDrag(e) {
 function reverseGeocode(lat, lng) {
   return new Promise((resolve) => {
     uni.request({
-      url: '/api/tencent/geocoder/v1/',
+      url: TENCENT_MAP_API_BASE + '/geocoder/v1/',
       data: {
         location: lat + ',' + lng,
         output: 'json',

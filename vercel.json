@@ -4,12 +4,8 @@
   "framework": null,
   "rewrites": [
     {
-      "source": "/((?!api/).*)",
+      "source": "/(.*)",
       "destination": "/index.html"
-    },
-    {
-      "source": "/api/tencent/:path*",
-      "destination": "https://apis.map.qq.com/ws/:path*"
     }
   ]
 }

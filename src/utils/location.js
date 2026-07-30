@@ -2,6 +2,7 @@
  * 腾讯地图 Keys（从 config 导入，避免硬编码）
  */
 import { QQ_MAP_GL_KEY, QQ_MAP_LOCATION_KEY } from '@/config/keys'
+import { TENCENT_MAP_API_BASE } from '@/utils/apiBase'
 
 /**
  * 默认位置（杭州市中心）
@@ -87,9 +88,7 @@ function getLocationByIP(key) {
       reject(new Error('加载腾讯地图定位服务失败'))
     }
 
-    // 优先使用 Vite 代理（开发环境避免域名授权限制）
-    // /api/tencent → https://apis.map.qq.com/ws
-    script.src = '/api/tencent/location/v1/ip?output=jsonp&key=' + key + '&callback=' + callbackName
+    script.src = TENCENT_MAP_API_BASE + '/location/v1/ip?output=jsonp&key=' + key + '&callback=' + callbackName
     document.head.appendChild(script)
     setTimeout(() => {
       cleanup()

@@ -733,7 +733,7 @@ function geocodeAddress(address) {
       return
     }
     uni.request({
-      url: '/api/tencent/geocoder/v1/',
+      url: TENCENT_MAP_API_BASE + '/geocoder/v1/',
       data: {
         address: address.trim(),
         region: '全国',
@@ -804,7 +804,7 @@ function useCurrentLocation() {
 function reverseGeocode(lat, lng) {
   console.log('[add-cat] reverseGeocode:', lat, lng)
   uni.request({
-    url: '/api/tencent/geocoder/v1/',
+    url: TENCENT_MAP_API_BASE + '/geocoder/v1/',
     data: {
       location: `${lat},${lng}`,
       output: 'json',
@@ -823,7 +823,7 @@ function reverseGeocode(lat, lng) {
 // IP 定位回退 (使用代理)
 function fallbackToIPLocation() {
   uni.request({
-    url: '/api/tencent/location/v1/ip',
+    url: TENCENT_MAP_API_BASE + '/location/v1/ip',
     data: {
       key: QQ_MAP_GL_KEY,
       output: 'json'
