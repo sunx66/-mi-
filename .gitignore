@@ -5,9 +5,6 @@ node_modules/
 dist/
 unpackage/
 
-# Config with API keys (do not push to public repo)
-src/config/keys.js
-
 # IDE
 .idea/
 .vscode/
