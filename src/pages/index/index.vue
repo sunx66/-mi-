@@ -378,18 +378,25 @@ function relocate() {
     catStore.setUserLocation(loc)
     catStore.initMockData()
     hideLoading()
-    // 地图移动操作与定位结果解耦：定位已成功，地图移动失败不应误报"定位失败"
-    if (mapContext.value) {
-      try {
-        mapContext.value.moveToLocation({
-          latitude: loc.latitude,
-          longitude: loc.longitude
-        })
-      } catch (mapErr) {
-        console.warn('[index] moveToLocation failed:', mapErr)
-      }
-    }
     showSuccess('已定位')
+    // 地图移动完全异步化，脱离 Promise 链
+    // 避免 moveToLocation 的任何异常（同步/异步）触发 .catch 的 showError('定位失败')
+    setTimeout(() => {
+      if (mapContext.value) {
+        try {
+          const ret = mapContext.value.moveToLocation({
+            latitude: loc.latitude,
+            longitude: loc.longitude
+          })
+          // 若返回 Promise，捕获 rejection 防止 unhandled rejection
+          if (ret && typeof ret.catch === 'function') {
+            ret.catch(e => console.warn('[index] moveToLocation rejected:', e))
+          }
+        } catch (e) {
+          console.warn('[index] moveToLocation failed:', e)
+        }
+      }
+    }, 0)
   }).catch(err => {
     console.error('[index] relocate failed:', err)
     hideLoading()
