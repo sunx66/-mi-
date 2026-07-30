@@ -116,7 +116,9 @@ export function getLocation() {
                 accuracy: result.accuracy || 50
               })
             } else {
-              throw new Error('qq.maps定位返回异常')
+              // 返回异常时继续 fallback，避免 Promise 永久挂起
+              console.warn('[location] qq.maps定位返回异常，回退到浏览器/IP定位')
+              tryBrowserAndIP()
             }
           },
           () => {

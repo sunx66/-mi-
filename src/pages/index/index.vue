@@ -378,11 +378,16 @@ function relocate() {
     catStore.setUserLocation(loc)
     catStore.initMockData()
     hideLoading()
+    // 地图移动操作与定位结果解耦：定位已成功，地图移动失败不应误报"定位失败"
     if (mapContext.value) {
-      mapContext.value.moveToLocation({
-        latitude: loc.latitude,
-        longitude: loc.longitude
-      })
+      try {
+        mapContext.value.moveToLocation({
+          latitude: loc.latitude,
+          longitude: loc.longitude
+        })
+      } catch (mapErr) {
+        console.warn('[index] moveToLocation failed:', mapErr)
+      }
     }
     showSuccess('已定位')
   }).catch(err => {
