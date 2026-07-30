@@ -1,0 +1,73 @@
+// 暖喵帮扶 — 品牌设计变量
+// Primary — warm orange-amber
+$color-primary-50: #fff8ed;
+$color-primary-100: #ffefd4;
+$color-primary-200: #ffdba8;
+$color-primary-300: #ffc070;
+$color-primary-400: #ff9c35;
+$color-primary-500: #ff8210;
+$color-primary-600: #f06506;
+$color-primary-700: #c74a06;
+$color-primary-800: #9e3b0c;
+$color-primary-900: #7f330e;
+
+// Neutrals — warm beige-gray
+$color-neutral-50: #faf8f5;
+$color-neutral-100: #f5f0ea;
+$color-neutral-200: #e8dfd4;
+$color-neutral-300: #d4c7b5;
+$color-neutral-400: #b8a890;
+$color-neutral-500: #9d8d74;
+$color-neutral-600: #857660;
+$color-neutral-700: #6f6252;
+$color-neutral-800: #5d5246;
+$color-neutral-900: #4e453c;
+$color-neutral-950: #2a2520;
+
+// State colors
+$state-success: #22a860;
+$state-success-light: #e6f7ee;
+$state-warning: #e68a00;
+$state-warning-light: #fff3db;
+$state-error: #dc2626;
+$state-error-light: #fde8e8;
+$state-info: #3b82f6;
+$state-info-light: #e8f0fe;
+
+// Semantic
+$bg-page: $color-neutral-50;
+$bg-card: #ffffff;
+$text-primary: $color-neutral-950;
+$text-secondary: $color-neutral-900;
+$text-muted: $color-neutral-600;
+$border-color: $color-neutral-200;
+$brand-primary: $color-primary-500;
+$brand-primary-light: $color-primary-50;
+
+// Radius
+$radius-sm: 8rpx;
+$radius-md: 16rpx;
+$radius-lg: 24rpx;
+$radius-xl: 32rpx;
+$radius-full: 9999rpx;
+
+// Typography
+$font-family: 'PingFang SC', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+$font-size-xs: 22rpx;
+$font-size-sm: 26rpx;
+$font-size-base: 30rpx;
+$font-size-lg: 34rpx;
+$font-size-xl: 40rpx;
+$font-size-2xl: 48rpx;
+$font-size-3xl: 60rpx;
+
+// Shadows
+$shadow-sm: 0 2rpx 4rpx rgba(0, 0, 0, 0.03);
+$shadow-md: 0 8rpx 24rpx rgba(0, 0, 0, 0.05);
+$shadow-lg: 0 16rpx 48rpx rgba(0, 0, 0, 0.05);
+
+// Safe area
+$safe-bottom: env(safe-area-inset-bottom);
+$status-bar-height: var(--status-bar-height, 44rpx);
+$nav-height: 88rpx;
+$tab-bar-height: 112rpx;

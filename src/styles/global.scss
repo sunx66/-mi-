@@ -1,0 +1,108 @@
+@import './variables.scss';
+
+page {
+  font-family: $font-family;
+  font-size: $font-size-base;
+  color: $text-primary;
+  background-color: $bg-page;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Utility classes */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-ellipsis-2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* Safe area padding */
+.safe-area-bottom {
+  padding-bottom: $safe-bottom;
+}
+
+/* Card base */
+.card {
+  background-color: $bg-card;
+  border-radius: $radius-lg;
+  border: 1rpx solid $border-color;
+  box-shadow: $shadow-sm;
+}
+
+/* Section title */
+.section-title {
+  font-size: $font-size-base;
+  font-weight: 600;
+  color: $text-secondary;
+  padding: 0 8rpx;
+  margin-bottom: 24rpx;
+}
+
+/* Button primary */
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 96rpx;
+  border-radius: $radius-full;
+  background-color: $brand-primary;
+  color: #ffffff;
+  font-size: $font-size-base;
+  font-weight: 600;
+  border: none;
+  box-shadow: $shadow-md;
+
+  &::after { border: none; }
+
+  &:active {
+    opacity: 0.85;
+    transform: scale(0.98);
+  }
+}
+
+/* Pill button */
+.pill-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 68rpx;
+  border-radius: $radius-full;
+  border: 1rpx solid $border-color;
+  font-size: $font-size-sm;
+  color: $text-muted;
+  background-color: $bg-card;
+  transition: all 0.2s;
+
+  &.active {
+    background-color: $brand-primary;
+    color: #ffffff;
+    border-color: $brand-primary;
+  }
+
+  &::after { border: none; }
+}
+
+/* Status colors */
+.status-success { color: $state-success; }
+.status-warning { color: $state-warning; }
+.status-error { color: $state-error; }
+.status-info { color: $state-info; }
+
+.bg-success-light { background-color: $state-success-light; }
+.bg-warning-light { background-color: $state-warning-light; }
+.bg-error-light { background-color: $state-error-light; }
+.bg-info-light { background-color: $state-info-light; }
