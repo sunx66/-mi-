@@ -96,26 +96,26 @@
       {
         "pagePath": "pages/index/index",
         "text": "首页",
-        "iconPath": "static/icons/tab-home.png",
-        "selectedIconPath": "static/icons/tab-home-active.png"
+        "iconPath": "static/tabbar/tab-home.png",
+        "selectedIconPath": "static/tabbar/tab-home-active.png"
       },
       {
         "pagePath": "pages/community/index",
         "text": "公告",
-        "iconPath": "static/icons/tab-community.png",
-        "selectedIconPath": "static/icons/tab-community-active.png"
+        "iconPath": "static/tabbar/tab-community.png",
+        "selectedIconPath": "static/tabbar/tab-community-active.png"
       },
       {
         "pagePath": "pages/guide/index",
         "text": "指南",
-        "iconPath": "static/icons/tab-guide.png",
-        "selectedIconPath": "static/icons/tab-guide-active.png"
+        "iconPath": "static/tabbar/tab-guide.png",
+        "selectedIconPath": "static/tabbar/tab-guide-active.png"
       },
       {
         "pagePath": "pages/profile/index",
         "text": "我的",
-        "iconPath": "static/icons/tab-profile.png",
-        "selectedIconPath": "static/icons/tab-profile-active.png"
+        "iconPath": "static/tabbar/tab-profile.png",
+        "selectedIconPath": "static/tabbar/tab-profile-active.png"
       }
     ]
   }
