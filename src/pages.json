@@ -83,6 +83,20 @@
         "navigationBarTitleText": "上门喂猫",
         "navigationStyle": "custom"
       }
+    },
+    {
+      "path": "pages/home-visit/detail",
+      "style": {
+        "navigationBarTitleText": "需求详情",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/home-visit/chat",
+      "style": {
+        "navigationBarTitleText": "沟通确认",
+        "navigationStyle": "custom"
+      }
     }
   ],
   "globalStyle": {

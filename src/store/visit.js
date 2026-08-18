@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { mockVisitList } from '../mock/visit'
+import { mockVisitList, PACKAGE_OPTIONS } from '../mock/visit'
 
 // 当前用户标识（mock）
 const CURRENT_USER = {
@@ -61,6 +61,9 @@ export const useVisitStore = defineStore('visit', () => {
     visitList.value.filter(v => v.status === 'completed').length
   )
 
+  // 套餐选项（来自 mock 常量）
+  const packageOptions = computed(() => PACKAGE_OPTIONS)
+
   // ============ actions ============
 
   function initMockData() {
@@ -102,6 +105,9 @@ export const useVisitStore = defineStore('visit', () => {
       foodList: payload.foodList || [],
       remark: payload.remark || '',
       reward: payload.reward || '',
+      packageLevel: payload.packageLevel || 'standard',
+      price: payload.price || 120,
+      messages: [],
       createTime: now.toISOString(),
       createTimeLabel: '刚刚'
     }
@@ -146,6 +152,69 @@ export const useVisitStore = defineStore('visit', () => {
     console.log('[visitStore] cancelVisit:', id)
   }
 
+  /**
+   * 获取指定等级的套餐信息
+   */
+  function getPackageInfo(level) {
+    return PACKAGE_OPTIONS[level]
+  }
+
+  /**
+   * 获取指定预约的打卡清单
+   */
+  function getChecklistItems(visitId) {
+    const visit = visitList.value.find(v => v.id === visitId)
+    return visit ? visit.checklist || [] : []
+  }
+
+  /**
+   * 标记打卡清单某项为已上传
+   */
+  function uploadChecklistItem(visitId, itemIndex) {
+    const visit = visitList.value.find(v => v.id === visitId)
+    if (!visit || !visit.checklist) return
+    const item = visit.checklist.find(c => c.id === itemIndex)
+    if (item) item.uploaded = true
+    console.log('[visitStore] uploadChecklistItem:', visitId, itemIndex)
+  }
+
+  /**
+   * 获取指定预约的沟通消息列表
+   */
+  function getMessages(visitId) {
+    const visit = visitList.value.find(v => v.id === visitId)
+    return visit ? visit.messages || [] : []
+  }
+
+  /**
+   * 向指定预约追加消息
+   */
+  function sendMessage(visitId, content) {
+    const visit = visitList.value.find(v => v.id === visitId)
+    if (!visit) return
+    visit.messages.push({
+      id: 'msg_' + Date.now(),
+      senderId: currentUserId,
+      senderName: '我',
+      content,
+      createTime: new Date().toISOString()
+    })
+  }
+
+  /**
+   * 获取预约完整详情（含套餐/打卡/消息）
+   */
+  function getVisitDetail(id) {
+    const visit = visitList.value.find(v => v.id === id)
+    if (!visit) return null
+    return {
+      ...visit,
+      packageInfo: PACKAGE_OPTIONS[visit.packageLevel] || null,
+      checklist: visit.checklist || [],
+      messages: visit.messages || []
+    }
+  }
+
   return {
     // state
     visitList,
@@ -158,6 +227,7 @@ export const useVisitStore = defineStore('visit', () => {
     pendingCount,
     acceptedCount,
     completedCount,
+    packageOptions,
     // actions
     initMockData,
     setTab,
@@ -165,6 +235,12 @@ export const useVisitStore = defineStore('visit', () => {
     createVisit,
     acceptVisit,
     completeVisit,
-    cancelVisit
+    cancelVisit,
+    getPackageInfo,
+    getChecklistItems,
+    uploadChecklistItem,
+    getMessages,
+    sendMessage,
+    getVisitDetail
   }
 })

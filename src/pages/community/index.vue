@@ -10,6 +10,25 @@
         </view>
       </view>
 
+      <!-- 搜索框（展开时显示） -->
+      <view v-if="searchVisible" class="search-bar">
+        <view class="search-input-wrap">
+          <text class="search-icon">🔍</text>
+          <input
+            class="search-input"
+            type="text"
+            placeholder="搜索公告标题或内容"
+            :value="searchKeyword"
+            @input="onSearchInput"
+            confirm-type="search"
+            @confirm="onSearchConfirm"
+          />
+          <view v-if="searchKeyword" class="search-clear" @tap="clearSearch">
+            <text>✕</text>
+          </view>
+        </view>
+      </view>
+
       <!-- 横向滚动 Tab 行 -->
       <scroll-view class="tab-scroll" scroll-x :show-scrollbar="false">
         <view class="tab-list">
@@ -297,12 +316,12 @@ const tabList = [
   { label: '领养预告', value: 'adopt' }
 ]
 
-// 标签颜色映射
+// 标签颜色映射（实底色 + 白字）
 const tagColorMap = {
-  rescue: { bg: '#fde8e8', text: '#dc2626' },
-  supply: { bg: '#fff3db', text: '#ff8210' },
-  status: { bg: '#e8f0fe', text: '#3b82f6' },
-  adopt: { bg: '#e6f7ee', text: '#22a860' }
+  rescue: { bg: '#dc2626', text: '#ffffff' },
+  supply: { bg: '#ff8210', text: '#ffffff' },
+  status: { bg: '#3b82f6', text: '#ffffff' },
+  adopt: { bg: '#22a860', text: '#ffffff' }
 }
 
 // 发布表单分类
@@ -319,8 +338,22 @@ const fabTop = computed(() => statusBarHeight.value + 176)
 // 列表 top 间距
 const listTop = computed(() => statusBarHeight.value + 88 + 80 + 16)
 
-// 帖子列表
-const posts = computed(() => communityStore.getFilteredPosts())
+// 搜索状态
+const searchVisible = ref(false)
+const searchKeyword = ref('')
+
+// 帖子列表（按分类 + 搜索关键词过滤）
+const posts = computed(() => {
+  let list = communityStore.getFilteredPosts()
+  if (searchKeyword.value.trim()) {
+    const kw = searchKeyword.value.trim().toLowerCase()
+    list = list.filter(p =>
+      (p.title && p.title.toLowerCase().includes(kw)) ||
+      (p.content && p.content.toLowerCase().includes(kw))
+    )
+  }
+  return list
+})
 
 // 详情弹窗状态
 const detailVisible = ref(false)
@@ -367,9 +400,27 @@ function retryLoad() {
   communityStore.fetchAnnouncements()
 }
 
-// 搜索
+// 搜索：切换搜索框显隐
 function onSearchTap() {
-  uni.showToast({ title: '搜索功能开发中', icon: 'none' })
+  searchVisible.value = !searchVisible.value
+  if (!searchVisible.value) {
+    searchKeyword.value = ''
+  }
+}
+
+// 搜索输入
+function onSearchInput(e) {
+  searchKeyword.value = e.detail.value
+}
+
+// 搜索确认（posts computed 会自动按 searchKeyword 过滤）
+function onSearchConfirm() {
+  // 过滤逻辑由 posts computed 响应式处理，此处无需额外操作
+}
+
+// 清空搜索关键词
+function clearSearch() {
+  searchKeyword.value = ''
 }
 
 // 打开发布弹窗
@@ -518,6 +569,40 @@ function onSendComment() {
 
       .nav-search-icon {
         font-size: 38rpx;
+      }
+    }
+  }
+
+  /* 搜索框 */
+  .search-bar {
+    padding: 0 24rpx 16rpx;
+    background: $bg-card;
+
+    .search-input-wrap {
+      display: flex;
+      align-items: center;
+      background: $bg-page;
+      border-radius: $radius-full;
+      padding: 12rpx 24rpx;
+
+      .search-icon {
+        font-size: 28rpx;
+        margin-right: 12rpx;
+      }
+
+      .search-input {
+        flex: 1;
+        font-size: 28rpx;
+        color: $text-primary;
+      }
+
+      .search-clear {
+        padding: 8rpx;
+
+        text {
+          font-size: 24rpx;
+          color: $text-muted;
+        }
       }
     }
   }

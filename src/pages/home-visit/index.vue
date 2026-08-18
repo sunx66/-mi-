@@ -35,10 +35,13 @@
       </view>
 
       <template v-else>
-        <view v-for="visit in visits" :key="visit.id" class="visit-card" :class="['visit-' + visit.status]">
+        <view v-for="visit in visits" :key="visit.id" class="visit-card" :class="['visit-' + visit.status]" @tap="onCardTap(visit)">
           <view class="status-bar" :class="'bar-' + visit.status">
             <text class="status-text">{{ getStatusLabel(visit.status) }}</text>
-            <text class="status-time" v-if="visit.visitTimeLabel">{{ visit.visitTimeLabel }}</text>
+            <view class="status-right">
+              <text class="status-time" v-if="visit.visitTimeLabel">{{ visit.visitTimeLabel }}</text>
+              <text class="price-text" v-if="visit.price">¥{{visit.price}}/天</text>
+            </view>
           </view>
 
           <view class="cat-row">
@@ -52,6 +55,14 @@
             <view v-if="visit.reward" class="reward-tag">
               <text class="reward-text">&#x1F381; {{ visit.reward }}</text>
             </view>
+          </view>
+
+          <!-- 套餐与距离信息行 -->
+          <view class="info-row">
+            <view class="package-tag" v-if="visit.packageLevel">
+              <text class="package-text">{{getPackageName(visit.packageLevel)}}</text>
+            </view>
+            <text class="distance-text" v-if="visit.distance">📍 距您{{visit.distance}}km</text>
           </view>
 
           <view class="food-section">
@@ -90,12 +101,25 @@
             </view>
           </view>
 
+          <!-- 发布人认证标签 -->
+          <view v-if="visit.publisher && visit.publisher.badges && visit.publisher.badges.length" class="badges-row">
+            <text v-for="badge in visit.publisher.badges" :key="badge" class="badge-chip">{{badge}}</text>
+          </view>
+
+          <!-- 信用数据 -->
+          <view v-if="visit.publisher && visit.publisher.credit" class="credit-row">
+            <text class="credit-text">履约率{{visit.publisher.credit.fulfillmentRate}}% · 好评率{{visit.publisher.credit.praiseRate}}%</text>
+          </view>
+
           <view class="contact-row" v-if="visitStore.activeTab === 'mine' || (visit.visitor && visit.visitor.id === visitStore.currentUserId)">
             <text class="contact-icon">&#x1F4DE;</text>
             <text class="contact-text">{{ visit.contact }}</text>
           </view>
 
           <view class="action-row">
+            <view class="chat-btn" @tap.stop="onChatTap(visit)">
+              <text class="chat-btn-text">立即沟通</text>
+            </view>
             <template v-if="visitStore.activeTab === 'nearby' && visit.status === 'pending'">
               <view class="btn btn-primary" @tap.stop="onAccept(visit)">
                 <text class="btn-text">我来接单</text>
@@ -143,6 +167,20 @@
                 </view>
               </view>
               <text v-if="formError.catId" class="form-error">{{ formError.catId }}</text>
+            </view>
+
+            <view class="form-section">
+              <text class="section-label">服务套餐</text>
+              <view class="package-list">
+                <view v-for="pkg in packageList" :key="pkg.level" class="package-item" :class="{ active: form.packageLevel === pkg.level }" @tap="selectPackage(pkg.level)">
+                  <view class="package-header">
+                    <text class="package-name">{{pkg.name}}</text>
+                    <text class="package-price">¥{{pkg.price}}/天</text>
+                  </view>
+                  <text class="package-desc">{{pkg.services.join('、')}}</text>
+                  <view class="package-radio" :class="{ checked: form.packageLevel === pkg.level }"></view>
+                </view>
+              </view>
             </view>
 
             <view class="form-section">
@@ -222,6 +260,8 @@ import { onShow } from '@dcloudio/uni-app'
 import { useVisitStore } from '@/store/visit'
 import { useCatStore } from '@/store/cat'
 import { getLocation } from '@/utils/location'
+import { openExternalNavigation } from '@/utils/mapNav'
+import { PACKAGE_OPTIONS } from '@/mock/visit'
 
 const visitStore = useVisitStore()
 const catStore = useCatStore()
@@ -255,10 +295,19 @@ const form = ref({
   foodList: [{ name: '', weight: null }],
   reward: '',
   contact: '',
-  remark: ''
+  remark: '',
+  packageLevel: 'standard',
+  price: 120
 })
 
 const formError = ref({})
+
+// 三档服务套餐列表（来自 mock 常量）
+const packageList = [
+  { level: 'basic', name: '基础喂养套餐', price: 80, services: PACKAGE_OPTIONS.basic.services },
+  { level: 'standard', name: '标准看护套餐', price: 120, services: PACKAGE_OPTIONS.standard.services },
+  { level: 'premium', name: '全套尊享套餐', price: 180, services: PACKAGE_OPTIONS.premium.services }
+]
 
 const maxDate = computed(() => {
   const d = new Date()
@@ -330,7 +379,9 @@ function onCreate() {
     foodList: [{ name: '', weight: null }],
     reward: '',
     contact: '',
-    remark: ''
+    remark: '',
+    packageLevel: 'standard',
+    price: 120
   }
   formError.value = {}
   formVisible.value = true
@@ -346,6 +397,18 @@ function selectCat(cat) {
   form.value.catName = cat.name
   form.value.catAvatarColor = cat.avatarColor
   if (formError.value.catId) formError.value.catId = ''
+}
+
+// 选择服务套餐
+function selectPackage(level) {
+  form.value.packageLevel = level
+  form.value.price = PACKAGE_OPTIONS[level].price
+}
+
+// 获取套餐短名（用于卡片展示）
+function getPackageName(level) {
+  const opts = { basic: '基础喂养', standard: '标准看护', premium: '全套尊享' }
+  return opts[level] || '标准看护'
 }
 
 function onDateChange(e) {
@@ -420,7 +483,9 @@ function onSubmit() {
       foodList,
       reward: form.value.reward.trim(),
       contact: form.value.contact.trim(),
-      remark: form.value.remark.trim()
+      remark: form.value.remark.trim(),
+      packageLevel: form.value.packageLevel,
+      price: form.value.price
     })
     visitStore.setTab('mine')
     formVisible.value = false
@@ -480,19 +545,20 @@ function onCancel(visit) {
 
 function onNavigate(visit) {
   if (!visit.latitude || !visit.longitude) {
-    uni.showToast({ title: '该预约无坐标信息', icon: 'none' })
+    uni.showToast({ title: '缺少位置信息', icon: 'none' })
     return
   }
-  try {
-    const { navigateToCat } = require('@/utils/mapNav')
-    navigateToCat({
-      latitude: visit.latitude,
-      longitude: visit.longitude,
-      name: visit.catName + ' 上门地点'
-    })
-  } catch (e) {
-    uni.showToast({ title: '导航功能加载失败', icon: 'none' })
-  }
+  openExternalNavigation(visit.latitude, visit.longitude, visit.catName + '的位置')
+}
+
+// 卡片点击跳转详情页
+function onCardTap(visit) {
+  uni.navigateTo({ url: '/pages/home-visit/detail?id=' + visit.id })
+}
+
+// 立即沟通，跳转聊天页
+function onChatTap(visit) {
+  uni.navigateTo({ url: '/pages/home-visit/chat?id=' + visit.id })
 }
 </script>
 
@@ -1118,6 +1184,133 @@ function onNavigate(visit) {
     color: #fff;
     font-size: $font-size-base;
     font-weight: 600;
+  }
+}
+
+// ============ 卡片增强样式 ============
+.status-right {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+.price-text {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: $brand-primary;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8rpx 28rpx;
+}
+.package-tag {
+  background: $brand-primary;
+  border-radius: $radius-full;
+  padding: 4rpx 16rpx;
+  .package-text {
+    font-size: 22rpx;
+    color: #fff;
+  }
+}
+.distance-text {
+  font-size: 24rpx;
+  color: $text-muted;
+}
+
+.badges-row {
+  display: flex;
+  gap: 8rpx;
+  flex-wrap: wrap;
+  padding: 0 28rpx 12rpx;
+}
+.badge-chip {
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: $radius-sm;
+  background: rgba(34, 168, 96, 0.1);
+  color: $state-success;
+}
+
+.credit-row {
+  padding: 0 28rpx 16rpx;
+}
+.credit-text {
+  font-size: 22rpx;
+  color: $text-muted;
+}
+
+.chat-btn {
+  padding: 14rpx 36rpx;
+  border-radius: $radius-full;
+  background-color: $brand-primary-light;
+  margin-right: auto;
+}
+.chat-btn-text {
+  color: $brand-primary;
+  font-size: $font-size-sm;
+  font-weight: 500;
+}
+
+// ============ 发布弹窗套餐选择样式 ============
+.section-label {
+  font-size: $font-size-sm;
+  color: $text-secondary;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 14rpx;
+}
+.package-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+.package-item {
+  position: relative;
+  padding: 20rpx 24rpx;
+  background-color: $color-neutral-50;
+  border-radius: $radius-md;
+  border: 2rpx solid transparent;
+
+  &.active {
+    background-color: $brand-primary-light;
+    border-color: $brand-primary;
+  }
+}
+.package-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+.package-name {
+  font-size: $font-size-base;
+  font-weight: 600;
+  color: $text-primary;
+}
+.package-price {
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $brand-primary;
+}
+.package-desc {
+  font-size: $font-size-xs;
+  color: $text-muted;
+  line-height: 1.5;
+}
+.package-radio {
+  position: absolute;
+  top: 24rpx;
+  right: 24rpx;
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 50%;
+  border: 2rpx solid $border-color;
+
+  &.checked {
+    background-color: $brand-primary;
+    border-color: $brand-primary;
   }
 }
 </style>
