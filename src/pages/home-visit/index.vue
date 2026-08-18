@@ -101,16 +101,6 @@
             </view>
           </view>
 
-          <!-- 发布人认证标签 -->
-          <view v-if="visit.publisher && visit.publisher.badges && visit.publisher.badges.length" class="badges-row">
-            <text v-for="badge in visit.publisher.badges" :key="badge" class="badge-chip">{{badge}}</text>
-          </view>
-
-          <!-- 信用数据 -->
-          <view v-if="visit.publisher && visit.publisher.credit" class="credit-row">
-            <text class="credit-text">履约率{{visit.publisher.credit.fulfillmentRate}}% · 好评率{{visit.publisher.credit.praiseRate}}%</text>
-          </view>
-
           <view class="contact-row" v-if="visitStore.activeTab === 'mine' || (visit.visitor && visit.visitor.id === visitStore.currentUserId)">
             <text class="contact-icon">&#x1F4DE;</text>
             <text class="contact-text">{{ visit.contact }}</text>
@@ -272,11 +262,21 @@ const fabTop = ref(120)
 const listTop = ref(176)
 
 const tabList = computed(() => [
-  { value: 'nearby', label: '附近接单', count: visitStore.nearbyVisits.length },
+  { value: 'nearby', label: '待接单', count: visitStore.nearbyVisits.length },
+  { value: 'accepted', label: '已接单', count: visitStore.acceptedVisits ? visitStore.acceptedVisits.length : 0 },
   { value: 'mine', label: '我的预约', count: visitStore.myVisits.length }
 ])
 
-const visits = computed(() => visitStore.filteredVisits)
+const visits = computed(() => {
+  const tab = visitStore.activeTab
+  if (tab === 'nearby') return visitStore.nearbyVisits
+  if (tab === 'accepted') {
+    // 已接单：我接单的且状态为accepted的
+    return visitStore.myVisits.filter(v => v.status === 'accepted' && v.visitor?.id === visitStore.currentUserId)
+  }
+  if (tab === 'mine') return visitStore.myVisits
+  return visitStore.filteredVisits
+})
 
 const formVisible = ref(false)
 const submitting = ref(false)
@@ -1216,28 +1216,6 @@ function onChatTap(visit) {
 }
 .distance-text {
   font-size: 24rpx;
-  color: $text-muted;
-}
-
-.badges-row {
-  display: flex;
-  gap: 8rpx;
-  flex-wrap: wrap;
-  padding: 0 28rpx 12rpx;
-}
-.badge-chip {
-  font-size: 20rpx;
-  padding: 4rpx 12rpx;
-  border-radius: $radius-sm;
-  background: rgba(34, 168, 96, 0.1);
-  color: $state-success;
-}
-
-.credit-row {
-  padding: 0 28rpx 16rpx;
-}
-.credit-text {
-  font-size: 22rpx;
   color: $text-muted;
 }
 

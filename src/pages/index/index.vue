@@ -85,6 +85,12 @@
         <text class="fab-label">新增猫咪</text>
       </view>
 
+      <!-- 上门喂猫入口按钮 -->
+      <view class="home-visit-btn" @tap="goToHomeVisit">
+        <text class="hv-icon">🐱</text>
+        <text class="hv-label">上门喂猫</text>
+      </view>
+
       <view v-if="selectedCat" class="route-info-bar" @tap="clearSelection">
         <view class="route-icon">
           <text class="route-icon-text">📍</text>
@@ -486,6 +492,11 @@ function goToAddCat() {
   uni.navigateTo({ url: '/pages/add-cat/index' })
 }
 
+// 跳转到上门喂猫列表页
+function goToHomeVisit() {
+  uni.navigateTo({ url: '/pages/home-visit/index' })
+}
+
 function goToProfile(cat) {
   console.log('[goToProfile] START, received cat:', cat)
   console.log('[goToProfile] cat.id:', cat?.id, 'cat.name:', cat?.name)
@@ -703,6 +714,26 @@ function goToProfile(cat) {
   &:active { opacity: 0.9; transform: scale(0.96); }
   .fab-icon { font-size: 36rpx; color: #fff; font-weight: 700; line-height: 1; }
   .fab-label { font-size: $font-size-sm; color: #fff; font-weight: 600; white-space: nowrap; }
+}
+
+/* 上门喂猫入口按钮样式 */
+.home-visit-btn {
+  position: absolute;
+  right: 24rpx;
+  bottom: 280rpx; /* 在 fab-btn 上方，避开 route-info-bar */
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  background: #FFFFFF;
+  border: 2rpx solid #FF8210;
+  border-radius: 999rpx;
+  padding: 12rpx 24rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.08);
+  z-index: 10;
+  transition: transform 0.2s;
+  &:active { transform: scale(0.96); }
+  .hv-icon { font-size: 32rpx; }
+  .hv-label { font-size: 26rpx; color: #FF8210; font-weight: 500; white-space: nowrap; }
 }
 
 .nearby-section {

@@ -36,44 +36,11 @@
             <view class="publisher-info">
               <view class="publisher-name-line">
                 <text class="publisher-name">{{ visit.publisher.name }}</text>
-                <text v-if="visit.publisher.verified" class="verified-icon">&#x2714;</text>
               </view>
               <text class="publish-time">发布于 {{ visit.createTimeLabel || '未知' }}</text>
             </view>
           </view>
 
-          <!-- 认证标签 -->
-          <view v-if="badges.length" class="badge-list">
-            <view v-for="(badge, idx) in badges" :key="idx" class="badge-item">
-              <text class="badge-text">{{ badge }}</text>
-            </view>
-          </view>
-
-          <!-- 信用数据 -->
-          <view class="credit-grid">
-            <view class="credit-item">
-              <text class="credit-value">{{ credit.fulfillmentRate }}%</text>
-              <text class="credit-label">履约率</text>
-            </view>
-            <view class="credit-item">
-              <text class="credit-value">{{ credit.praiseRate }}%</text>
-              <text class="credit-label">好评率</text>
-            </view>
-            <view class="credit-item">
-              <text class="credit-value">{{ credit.disputes }}</text>
-              <text class="credit-label">纠纷数</text>
-            </view>
-            <view class="credit-item">
-              <text class="credit-value">{{ credit.totalOrders }}</text>
-              <text class="credit-label">累计单</text>
-            </view>
-          </view>
-
-          <!-- 三重认证标识 -->
-          <view class="verified-line">
-            <text class="shield-icon">&#x1F6E1;</text>
-            <text class="verified-text">已通过实名·人脸·信用三重认证</text>
-          </view>
         </view>
 
         <!-- 需求标题与描述 -->
@@ -281,18 +248,6 @@ const PACKAGE_OPTIONS = mockVisit.PACKAGE_OPTIONS || LOCAL_PACKAGE_OPTIONS
 
 // 当前用户是否为发布者
 const isOwner = computed(() => visit.value?.publisher?.id === visitStore.currentUserId)
-
-// 发布者认证标签
-const badges = computed(() => {
-  if (!visit.value) return []
-  return visit.value.publisher?.badges || ['实名认证', '信用认证']
-})
-
-// 发布者信用数据
-const credit = computed(() => {
-  if (!visit.value) return { fulfillmentRate: 100, praiseRate: 100, disputes: 0, totalOrders: 0 }
-  return visit.value.publisher?.credit || { fulfillmentRate: 100, praiseRate: 100, disputes: 0, totalOrders: 0 }
-})
 
 // 猫咪数量文案
 const catCountText = computed(() => {
@@ -573,68 +528,9 @@ function statusIcon(status) {
     font-weight: 600;
     color: $text-primary;
   }
-  .verified-icon {
-    font-size: $font-size-sm;
-    color: $state-success;
-  }
   .publish-time {
     font-size: $font-size-xs;
     color: $text-muted;
-  }
-}
-
-.badge-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12rpx;
-  margin-top: 20rpx;
-  .badge-item {
-    padding: 6rpx 18rpx;
-    background-color: $brand-primary-light;
-    border-radius: $radius-full;
-  }
-  .badge-text {
-    font-size: $font-size-xs;
-    color: $brand-primary;
-  }
-}
-
-.credit-grid {
-  display: flex;
-  margin-top: 24rpx;
-  padding: 20rpx 0;
-  border-top: 1rpx solid $border-color;
-  border-bottom: 1rpx solid $border-color;
-  .credit-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6rpx;
-  }
-  .credit-value {
-    font-size: $font-size-lg;
-    font-weight: 700;
-    color: $text-primary;
-  }
-  .credit-label {
-    font-size: $font-size-xs;
-    color: $text-muted;
-  }
-}
-
-.verified-line {
-  margin-top: 20rpx;
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-  .shield-icon {
-    font-size: $font-size-sm;
-  }
-  .verified-text {
-    font-size: $font-size-xs;
-    color: $state-success;
-    font-weight: 500;
   }
 }
 

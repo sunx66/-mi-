@@ -45,6 +45,11 @@ export const useVisitStore = defineStore('visit', () => {
     })
   })
 
+  // 已接单：我接单的且状态为accepted的
+  const acceptedVisits = computed(() =>
+    visitList.value.filter(v => v.status === 'accepted' && v.visitor && v.visitor.id === currentUserId.value)
+  )
+
   // 当前 tab 过滤后的列表
   const filteredVisits = computed(() => {
     return activeTab.value === 'nearby' ? nearbyVisits.value : myVisits.value
@@ -223,6 +228,7 @@ export const useVisitStore = defineStore('visit', () => {
     // computed
     nearbyVisits,
     myVisits,
+    acceptedVisits,
     filteredVisits,
     pendingCount,
     acceptedCount,
