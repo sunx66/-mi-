@@ -176,5 +176,48 @@ export const mockVisitList = [
     messages: [
       { id: 'msg_0031', senderId: 'user_001', senderName: '暖喵志愿者', content: '花花早8点投喂最佳，期待接单', createTime: '2026-07-30T09:35:00' }
     ]
+  }  ,
+  {
+    id: 'visit_004',
+    catId: 'cat_004',
+    catName: '咪咪',
+    catAvatarColor: '#FF9800',
+    status: 'pending',
+    publisher: {
+      id: 'user_004',
+      name: '王阿姨',
+      avatarColor: '#3b82f6',
+      verified: true,
+      badges: ['认证喂猫师', '高履约信用师'],
+      credit: { fulfillmentRate: 97, praiseRate: 95, disputes: 0, totalOrders: 65 }
+    },
+    visitor: null,
+    visitTime: '2026-08-02T10:00:00',
+    visitTimeLabel: '8月2日 10:00',
+    address: '和平路 12 号院',
+    latitude: 30.2760,
+    longitude: 120.1570,
+    contact: '139****6666',
+    foodList: [
+      { name: '猫粮', weight: 60 },
+      { name: '清水', weight: 200 }
+    ],
+    remark: '咪咪性格温顺，喜欢在后院晒太阳，注意不要喂牛奶',
+    reward: '猫罐头一个',
+    createTime: '2026-07-30T14:00:00',
+    createTimeLabel: '2小时前',
+    packageLevel: 'standard',
+    price: 120,
+    serviceDays: 4,
+    dailyCount: 1,
+    distance: 1.5,
+    checklist: [
+      { id: 0, name: '上门前环境全景照', uploaded: false },
+      { id: 1, name: '粮水投放完成对比照', uploaded: false },
+      { id: 2, name: '猫砂清理前后对比照', uploaded: false },
+      { id: 3, name: '宠物实时状态照', uploaded: false },
+      { id: 4, name: '居家安全巡检收尾照', uploaded: false }
+    ],
+    messages: []
   }
 ]
