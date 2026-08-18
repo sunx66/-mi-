@@ -86,10 +86,12 @@ import { ref, computed } from 'vue'; import { onShow } from '@dcloudio/uni-app'
 import { useUserStore } from '@/store/user'
 import { useCatStore } from '@/store/cat'
 import { useCommunityStore } from '@/store/community'
+import { useVisitStore } from '@/store/visit'
 
 const userStore = useUserStore()
 const catStore = useCatStore()
 const communityStore = useCommunityStore()
+const visitStore = useVisitStore()
 
 const CURRENT_USER_NAME = '暖喵志愿者'
 
@@ -128,6 +130,15 @@ const helpCount = computed(() => myPostCount.value + myCommentCount.value)
 // 收藏点位数
 const favoriteCount = computed(() => userStore.favoriteCats.length)
 
+// 上门喂猫预约数（待处理：待接单 + 已接单）
+const visitCount = computed(() => {
+  visitStore.initMockData()
+  return visitStore.visitList.filter(v =>
+    (v.publisher.id === userStore.userInfo.id || (v.visitor && v.visitor.id === userStore.userInfo.id))
+    && (v.status === 'pending' || v.status === 'accepted')
+  ).length
+})
+
 // ============ 记录列表（角标与顶部统计同源） ============
 const recordList = computed(() => [
   {
@@ -161,6 +172,14 @@ const recordList = computed(() => [
     bgColor: 'rgba(230, 138, 0, 0.08)',
     count: favoriteCount.value,
     route: '/pages/favorite-spots/index'
+  },
+  {
+    title: '上门喂猫',
+    icon: '🏠',
+    color: '#ff8210',
+    bgColor: 'rgba(255, 130, 16, 0.08)',
+    count: visitCount.value,
+    route: '/pages/home-visit/index'
   }
 ])
 

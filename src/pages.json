@@ -76,6 +76,13 @@
         "navigationBarTitleText": "收藏点位",
         "navigationStyle": "custom"
       }
+    },
+    {
+      "path": "pages/home-visit/index",
+      "style": {
+        "navigationBarTitleText": "上门喂猫",
+        "navigationStyle": "custom"
+      }
     }
   ],
   "globalStyle": {
