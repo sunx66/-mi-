@@ -18,7 +18,7 @@
  *  - serviceDays: 服务天数
  *  - dailyCount: 每日上门次数
  *  - distance: 距离 km
- *  - publisher: 发布人信息（含 verified 认证、badges 标签、credit 信用）
+ *  - publisher: 发布人信息
  *  - checklist: 上门打卡清单 [{ id, name, uploaded }]
  *  - messages: 沟通消息列表 [{ id, senderId, senderName, content, createTime }]
  */
@@ -41,9 +41,6 @@ export const mockVisitList = [
       id: 'user_002',
       name: '张大姐',
       avatarColor: '#ff8210',
-      verified: true,
-      badges: ['认证喂猫师'],
-      credit: { fulfillmentRate: 95, praiseRate: 92, disputes: 1, totalOrders: 50 }
     },
     visitor: {
       id: 'user_001',
@@ -91,9 +88,6 @@ export const mockVisitList = [
       id: 'user_001',
       name: '暖喵志愿者',
       avatarColor: '#ff8210',
-      verified: true,
-      badges: ['认证喂猫师', '高履约信用师'],
-      credit: { fulfillmentRate: 98, praiseRate: 96, disputes: 0, totalOrders: 86 }
     },
     visitor: {
       id: 'user_003',
@@ -142,9 +136,6 @@ export const mockVisitList = [
       id: 'user_001',
       name: '暖喵志愿者',
       avatarColor: '#ff8210',
-      verified: true,
-      badges: ['认证喂猫师'],
-      credit: { fulfillmentRate: 90, praiseRate: 88, disputes: 0, totalOrders: 23 }
     },
     visitor: null,
     visitTime: '2026-08-01T08:00:00',
@@ -187,9 +178,6 @@ export const mockVisitList = [
       id: 'user_004',
       name: '王阿姨',
       avatarColor: '#3b82f6',
-      verified: true,
-      badges: ['认证喂猫师', '高履约信用师'],
-      credit: { fulfillmentRate: 97, praiseRate: 95, disputes: 0, totalOrders: 65 }
     },
     visitor: null,
     visitTime: '2026-08-02T10:00:00',
